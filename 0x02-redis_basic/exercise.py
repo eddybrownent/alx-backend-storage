@@ -50,11 +50,12 @@ def replay(method: Callable) -> None:
     """
     key = method.__qualname__
 
+    r_db = method.__self__._redis
     inputs_key = key + ":inputs"
     outputs_key = key + ":outputs"
 
-    inputs = cache._redis.lrange(inputs_key, 0, -1)
-    outputs = cache._redis.lrange(outputs_key, 0, -1)
+    inputs = r_db.lrange(inputs_key, 0, -1)
+    outputs = r_db.lrange(outputs_key, 0, -1)
 
     print(f"{key} was called {len(inputs)} times:")
 
