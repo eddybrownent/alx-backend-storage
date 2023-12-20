@@ -40,7 +40,8 @@ def call_history(method: Callable) -> Callable:
 
     return wrapper
 
-def replay(method: Callable):
+
+def replay(method: Callable) -> None:
     """
     Display history of calls of particular function
 
@@ -62,6 +63,7 @@ def replay(method: Callable):
         output = output_str.decode("utf-8")
 
         print(f"{key}(*{input_args}) -> {output}")
+
 
 def count_calls(method: Callable) -> Callable:
     """
@@ -85,6 +87,7 @@ def count_calls(method: Callable) -> Callable:
         return method(self, *args, **kwargs)
 
     return wrapper
+
 
 class Cache:
     """
