@@ -32,6 +32,10 @@ class Cache:
         """
         # create a random key and return it
         key = str(uuid.uuid4())
+
+        if isinstance(data, (int, float)):
+            data = str(data)
+
         self._redis.set(key, data)
 
         return key
