@@ -37,6 +37,7 @@ def nginx_stats():
     print(f"{status_check} status check")
 
     # the top 10 ips
+    print("Ips:")
     arr_ips = logs_collection.aggregate(
             [{"$group": {"_id": "$ip", "count": {"$sum": 1}}},
              {"$sort": {"count": -1}},
