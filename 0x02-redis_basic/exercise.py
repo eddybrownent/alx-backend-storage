@@ -40,6 +40,28 @@ def call_history(method: Callable) -> Callable:
 
     return wrapper
 
+def replay(method: Callable):
+    """
+    Display history of calls of particular function
+
+    Args:
+        method : method for which history is displayed
+    """
+    key = method.__qualname__
+
+    inputs_key = key + ":inputs"
+    outputs_key = key + ":outputs"
+
+    inputs = cache._redis.lrange(inputs_key, 0, -1)
+    outputs = cache._redis.lrange(outputs_key, 0, -1)
+
+    print(f"{key} was called {len(inputs)} times:")
+
+    for input_str, output_str in zip(inputs, outputs):
+        input_args = input_str.decode("utf-8")
+        output = output_str.decode("utf-8")
+
+        print(f"{key}(*{input_args}) -> {output}")
 
 def count_calls(method: Callable) -> Callable:
     """
@@ -63,31 +85,6 @@ def count_calls(method: Callable) -> Callable:
         return method(self, *args, **kwargs)
 
     return wrapper
-
-
-def replay(method: Callable):
-    """
-    Display history of calls of particular function
-
-    Args:
-        method : method for which history is displayed
-    """
-    key = method.__qualname__
-
-    inputs_key = key + ":inputs"
-    outputs_key = key + ":outputs"
-
-    inputs = cache._redis.lrange(inputs_key, 0, -1)
-    outputs = cache._redis.lrange(outputs_key, 0, -1)
-
-    print(f"{key} was called {len(inputs)} times:")
-
-    for input_str, output_str in zip(inputs, outputs):
-        input_args = eval(input_str)
-        output = eval(output_str)
-
-        print(f"{key}(*{input_args}) -> {output}")
-
 
 class Cache:
     """
