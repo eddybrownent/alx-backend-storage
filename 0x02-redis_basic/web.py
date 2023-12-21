@@ -6,7 +6,6 @@ import requests
 import redis
 from functools import wraps
 from typing import Callable
-import time
 
 redis_store = redis.Redis()
 
@@ -43,11 +42,16 @@ def data_cache(method: Callable) -> Callable:
         # If not, fetch the page content
         result = method(url)
 
-        # Reset the access count and cache the result with expiration
+        # Reset access count and cache result with expiration
         redis_store.setex(f'result:{url}', 10, result)
 
         return result
     return wrapper
+
+class Web:
+    def __init__(self):
+        self._redis = redis.Redis()
+        self._redis.flushdb()
 
 
 @data_cache
@@ -63,13 +67,3 @@ def get_page(url: str) -> str:
         str: content of the URL.
     """
     return requests.get(url).text
-
-# Example usage
-url = "http://www.google.com"
-content = get_page(url)
-print(content)
-
-
-time.sleep(11)
-content_cached = get_page(url)
-print(content_cached)
