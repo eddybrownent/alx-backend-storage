@@ -36,7 +36,7 @@ def data_cache(method: Callable) -> Callable:
         redis_store.incr(f'count:{url}')
 
         # Check if the result is already cached
-        result = redis_store.get(f'cached:{url}')
+        result = redis_store.get(f'result:{url}')
         if result:
             return result.decode('utf-8')
 
@@ -44,7 +44,7 @@ def data_cache(method: Callable) -> Callable:
         result = method(url)
 
         # Reset the access count and cache the result with expiration
-        redis_store.setex(f'cached:{url}', 10, result)
+        redis_store.setex(f'result:{url}', 10, result)
 
         return result
     return wrapper
