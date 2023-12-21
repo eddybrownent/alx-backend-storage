@@ -48,6 +48,7 @@ def data_cache(method: Callable) -> Callable:
         return result
     return wrapper
 
+
 class Web:
     def __init__(self):
         self._redis = redis.Redis()
