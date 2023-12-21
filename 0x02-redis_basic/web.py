@@ -6,7 +6,7 @@ import requests
 import redis
 from functools import wraps
 from typing import Callable
-
+import time
 
 redis_store = redis.Redis()
 
@@ -63,3 +63,13 @@ def get_page(url: str) -> str:
         str: content of the URL.
     """
     return requests.get(url).text
+
+# Example usage
+url = "http://www.google.com"
+content = get_page(url)
+print(content)
+
+
+time.sleep(11)
+content_cached = get_page(url)
+print(content_cached)
