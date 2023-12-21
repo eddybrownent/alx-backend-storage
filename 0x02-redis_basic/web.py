@@ -22,7 +22,7 @@ def data_cache(method: Callable) -> Callable:
         Callable: decorated function
     """
     @wraps(method)
-    def wrapper(url) -> str:
+    def wrapper(url: str) -> str:
         """
         Wrapper function
 
@@ -64,13 +64,3 @@ def get_page(url: str) -> str:
         str: content of the URL.
     """
     return requests.get(url).text
-
-
-# Example usage
-url = "http://slowwly.robertomurray.co.uk"
-content = get_page(url)
-print(content)
-
-# accessing the same URL again
-content_cached = get_page(url)
-print(content_cached)
