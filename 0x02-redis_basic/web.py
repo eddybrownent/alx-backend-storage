@@ -50,6 +50,9 @@ def data_cache(method: Callable) -> Callable:
 
 
 class Web:
+    """
+    Initializes an instance of the Web
+    """
     def __init__(self):
         self._redis = redis.Redis()
         self._redis.flushdb()
