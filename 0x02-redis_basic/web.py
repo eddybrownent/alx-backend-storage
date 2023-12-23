@@ -49,13 +49,13 @@ def data_cache(method: Callable) -> Callable:
     return wrapper
 
 
-class Web:
-    """
-    Initializes an instance of the Web
-    """
-    def __init__(self):
-        self._redis = redis.Redis()
-        self._redis.flushdb()
+# class Web:
+#      """
+#      Initializes an instance of the Web
+#      """
+#      def __init__(self):
+#          self._redis = redis.Redis()
+#          self._redis.flushdb()
 
 
 @data_cache
@@ -71,3 +71,6 @@ def get_page(url: str) -> str:
         str: content of the URL.
     """
     return requests.get(url).text
+
+if __name__ == "__main__":
+    get_page("http://slowwly.robertomurray.co.uk")
